@@ -10,7 +10,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git 'git@github.com:Rozakurniawan/final-project.git'
+        git 'https://github.com/Rozakurniawan/final-project.git'
       }
     }
 
@@ -41,3 +41,4 @@ pipeline {
     }
   }
 }
+
