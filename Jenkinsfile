@@ -4,8 +4,6 @@ pipeline {
   environment {
     IMAGE_NAME = "texsa/flask-app"
     IMAGE_TAG = "latest"
-    DOCKER_USER = "texsa"
-    DOCKER_PASS = "@Roza12345"
     NAMESPACE = "dev"
   }
 
@@ -24,11 +22,13 @@ pipeline {
 
     stage('Push Docker Image') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-          sh '''
-            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-            docker push $IMAGE_NAME:$IMAGE_TAG
-          '''
+        script {
+          def dockerhubCreds = 'dckr_pat_HEYpGtP2JyG7im-QPA3ibGkRdHQ'
+          
+          withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+            sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
+            sh 'docker push $IMAGE_NAME:$IMAGE_TAG'
+          }
         }
       }
     }
