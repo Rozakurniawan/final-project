@@ -4,7 +4,7 @@ pipeline {
   environment {
     IMAGE_NAME = "texsa/flask-app"
     IMAGE_TAG = "latest"
-    DOCKER_USER = "gredstev@gmail.com"
+    DOCKER_USER = "texsa"
     DOCKER_PASS = "@Roza12345"
     NAMESPACE = "dev"
   }
