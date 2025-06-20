@@ -8,7 +8,7 @@ pipeline {
   }
 
   stages {
-    stage('Checkout') {More actions
+    stage('Checkout')
       steps {
         git branch: 'main', url: 'https://github.com/Rozakurniawan/final-project.git'
       }
