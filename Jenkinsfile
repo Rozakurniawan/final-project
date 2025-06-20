@@ -45,6 +45,7 @@ pipeline {
     
     stage('Deploy to Dev') {
       steps {
+        sh 'minikube start'
         sh 'kubectl apply -f namespace.yaml'
         sh 'kubectl apply -f dev-configmap.yaml'
         sh 'kubectl apply -f dev-secret.yaml'
