@@ -33,13 +33,12 @@ pipeline {
     
     stage('Deploy to Dev') {
       steps {
-        withKubeConfig{
-        
-        sh '/usr/local/bin/kubectl apply -f namespace.yaml'
-        sh '/usr/local/bin/kubectl apply -f dev-configmap.yaml'
-        sh '/usr/local/bin/kubectl apply -f dev-secret.yaml'
+                
+        sh 'kubectl apply -f namespace.yaml'
+        sh 'kubectl apply -f dev-configmap.yaml'
+        sh 'kubectl apply -f dev-secret.yaml'
         sh 'helm upgrade --install flask-dev ./helm-chart --namespace dev'
-        }
+        
       }
     }
   }
