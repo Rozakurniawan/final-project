@@ -23,8 +23,6 @@ pipeline {
     stage('Push Docker Image') {
       steps {
         script {
-          def dockerhubCreds = 'dckr_pat_HEYpGtP2JyG7im-QPA3ibGkRdHQ'
-
           withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
             sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
             sh 'docker push $IMAGE_NAME:$IMAGE_TAG'
@@ -37,9 +35,9 @@ pipeline {
       steps {
         withKubeConfig{
         
-        sh 'kubectl apply -f namespace.yaml'
-        sh 'kubectl apply -f dev-configmap.yaml'
-        sh 'kubectl apply -f dev-secret.yaml'
+        sh '/usr/local/bin/kubectl apply -f namespace.yaml'
+        sh '/usr/local/bin/kubectl apply -f dev-configmap.yaml'
+        sh '/usr/local/bin/kubectl apply -f dev-secret.yaml'
         sh 'helm upgrade --install flask-dev ./helm-chart --namespace dev'
         }
       }
