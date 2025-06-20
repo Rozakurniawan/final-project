@@ -8,7 +8,7 @@ pipeline {
   }
 
   stages {
-    stage('Checkout')
+    stage('Checkout') {
       steps {
         Checkout scm
       }
@@ -20,18 +20,18 @@ pipeline {
       }
     }
 
-    stage('Push') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'your_dockerhub_id', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUsername')]) {
-                    script {
-                        docker.withRegistry('https://index.docker.io/v1/', 'your_dockerhub_id') {
-                            dockerImage.push("${env.BUILD_NUMBER}")
-                            dockerImage.push('latest')
-                        }
-                    }
-                }
-            }
+    stage('Push Docker Image') {
+      steps {
+        script {
+          def dockerhubCreds = 'dckr_pat_HEYpGtP2JyG7im-QPA3ibGkRdHQ'
+
+          withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+            sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
+            sh 'docker push $IMAGE_NAME:$IMAGE_TAG'
+          }
         }
+      }
+    }
 
     stage('Deploy to Dev') {
       steps {
@@ -43,4 +43,3 @@ pipeline {
     }
   }
 }
-
