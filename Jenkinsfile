@@ -36,10 +36,7 @@ pipeline {
     stage('Deploy to Dev') {
       steps {
         withKubeConfig{
-        sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
-        sh 'chmod u+x ./kubectl' 
-          
-        sh 'minikube start'
+        
         sh 'kubectl apply -f namespace.yaml'
         sh 'kubectl apply -f dev-configmap.yaml'
         sh 'kubectl apply -f dev-secret.yaml'
