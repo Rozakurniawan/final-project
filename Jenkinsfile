@@ -8,11 +8,9 @@ pipeline {
   }
 
   stages {
-   stage('Checkout') {
+    stage('Checkout') {More actions
       steps {
-        checkout scmGit(userRemoteConfigs: [
-                    [ url: 'https://github.com/Rozakurniawan/final-project.git' ]
-                ])
+        git branch: 'main', url: 'https://github.com/Rozakurniawan/final-project.git'
       }
     }
 
