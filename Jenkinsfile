@@ -42,21 +42,16 @@ pipeline {
 
 
     stage('Approve Prod') {
-      when {
-        buildingTag()
-      }
-      steps {
-        input 'Deploy to production?'
+    steps {
+        input message: "Deploy to Production?", ok: "Yes, Deploy to Prod"
       }
     }
+
     stage('Deploy to Prod') {
-      when {
-        buildingTag()
-      }
-      steps {
-        sh 'kubectl apply -f prod-configmap.yaml --namespace=prod'
-        sh 'kubectl apply -f prod-secret.yaml --namespace=prod'
-        sh 'helm upgrade --install flask-dev ./helm-chart --namespace prod'
+    steps {
+        sh 'kubectl apply -f prod-configmap.yaml'
+        sh 'kubectl apply -f prod-secret.yaml'
+	sh 'helm upgrade --install flask-prod ./helm-chart --namespace prod'
       }
     }
   }
