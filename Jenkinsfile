@@ -29,16 +29,18 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'DOCKER_PASS')]) {
-                        sh "echo $DOCKER_PASS | docker login -u texsa --password-stdin"
-                        sh "docker push ${DOCKER_IMAGE_NAME}:${env.IMAGE_TAG}"
-                    }
-                }
-            }
+
+    stage('Push Docker Image') {
+      steps {
+        script {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+            sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
+            sh 'docker push $IMAGE_NAME:$IMAGE_TAG'
+          }
         }
+      }
+    }
+    
 
 
         stage('Deploy to Dev') {
